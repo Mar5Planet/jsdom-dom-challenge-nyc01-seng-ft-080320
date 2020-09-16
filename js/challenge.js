@@ -38,13 +38,13 @@ const timeControl = () => {
     }
     
 
-    const interval = () => { setInterval(incrementTime, 1000)}
-    interval()
+    let interval  = setInterval(incrementTime, 1000)
+    
     const likeButton = document.querySelector('#heart')
     const plusButton = document.querySelector('#plus')
     const minusButton = document.querySelector('#minus')
     const pauseButton = document.querySelector('#pause')
-    console.log(plusButton)
+    
     plusButton.addEventListener('click', (e) => {
         incrementTime()
     })
@@ -65,19 +65,46 @@ const timeControl = () => {
             if (status === 'active') {
                 
                 pauseButton.innerText = 'pause'
-                interval
+                interval = setInterval(incrementTime, 1000)
+                minusButton.disabled = false
+                plusButton.disabled = false
+                likeButton.disabled = false
                 status = 'inactive'
 
 
             } else {
                 pauseButton.innerText = 'resume'
                 clearInterval(interval)
-                status = 'active'
+                minusButton.disabled = true
+                plusButton.disabled = true
                 likeButton.disabled = true
+                status = 'active'
             }
             
         }
+
     })
+
+    document.addEventListener('submit', e => {
+        
+        if (e.target.matches('#comment-form')) {
+            
+            const commentForm = document.querySelector('#comment-form')
+            const commentInput = document.querySelector('#comment-input').value
+            
+
+            const comment = document.createElement('p')
+            comment.innerText = commentInput
+
+            const commentDiv = document.querySelector('#list')
+            commentDiv.appendChild(comment)
+            commentForm.reset()
+            e.preventDefault()
+            
+        }
+    })
+
+
     
 }
 
