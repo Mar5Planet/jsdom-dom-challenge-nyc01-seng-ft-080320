@@ -2,21 +2,14 @@
 const timeControl = () => {
     
 
-    const incrementTime = () => {
+    const incrementTime = num => {
         const counter = document.querySelector('#counter').innerText
         const counterHeader = document.querySelector('#counter')
         const currentNum = parseInt(counter)
-        const newScore = currentNum + 1
+        const newScore = currentNum + num
         counterHeader.textContent = newScore
     }
 
-    const deincrementTime = () => {
-        const counter = document.querySelector('#counter').innerText
-        const counterHeader = document.querySelector('#counter')
-        const currentNum = parseInt(counter)
-        const newScore = currentNum - 1
-        counterHeader.textContent = newScore
-    }
 
     const likeNumber = () => {
         const likesUl = document.querySelector('.likes')
@@ -38,50 +31,45 @@ const timeControl = () => {
     }
     
 
-    let interval  = setInterval(incrementTime, 1000)
+    let interval  = setInterval(() => {incrementTime(1)}, 1000)
     
-    const likeButton = document.querySelector('#heart')
-    const plusButton = document.querySelector('#plus')
-    const minusButton = document.querySelector('#minus')
-    const pauseButton = document.querySelector('#pause')
     
-    plusButton.addEventListener('click', (e) => {
-        incrementTime()
-    })
-
-    minusButton.addEventListener('click', (e) => {
-        deincrementTime()
-    })
-
-    likeButton.addEventListener('click', e =>{
-        likeNumber()
-    })
-
     let status = 'inactive'
     document.addEventListener('click', e => {
         
         if (e.target.matches('#pause')) {
-            
+            pauseButton = document.querySelector('#pause')
             if (status === 'active') {
                 
                 pauseButton.innerText = 'pause'
-                interval = setInterval(incrementTime, 1000)
-                minusButton.disabled = false
-                plusButton.disabled = false
-                likeButton.disabled = false
+                interval  = setInterval(() => {incrementTime(1)}, 1000)
+                document.querySelector('#heart').disabled = false
+                document.querySelector('#plus').disabled = false
+                document.querySelector('#minus').disabled = false
+                document.querySelector('#submit').disabled = false
                 status = 'inactive'
+
 
 
             } else {
                 pauseButton.innerText = 'resume'
                 clearInterval(interval)
-                minusButton.disabled = true
-                plusButton.disabled = true
-                likeButton.disabled = true
+                document.querySelector('#heart').disabled = true
+                document.querySelector('#plus').disabled = true
+                document.querySelector('#minus').disabled = true
+                document.querySelector('#submit').disabled = true
                 status = 'active'
             }
             
-        }
+        } else if (e.target.matches('#plus')) {
+            incrementTime(1)
+        } else if (e.target.matches('#minus')) {
+            incrementTime(-1)
+        } else if (e.target.matches('#heart')) {
+            likeNumber()
+        } 
+
+
 
     })
 
