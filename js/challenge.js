@@ -20,36 +20,30 @@ const timeControl = () => {
 
     const likeNumber = () => {
         const likesUl = document.querySelector('.likes')
-
         const currentNumber = document.querySelector('#counter').textContent
-        const numberLi = document.createElement('li')
-        numberLi.innerText = currentNumber
+        
+        const currentItem = document.getElementById(currentNumber)
+        
+        if (currentItem) {
+            currentItem.dataset.likes = parseInt(currentItem.dataset.likes) + 1
+            currentItem.innerText = `${currentNumber} has been liked ${currentItem.dataset.likes} times`
 
-        if (likes == null) {
-            let likes = numberLi.dataset.likes = 1
-         }
-         else {
-             likes = parseInt(likes) + 1 
-         }
-
-        likesUl.append(numberLi)
-
-        // let numberOfLikes = 0
-        // numberOfLikes++
-
-        // const likesUl = document.querySelector('.likes')
-        // const likeLi = document.createElement('li')
-        // currentScore has been liked (number of times) time, add conditional for time(s)
-
+        } else {
+            const numberLi = document.createElement('li')
+            numberLi.id = currentNumber
+            numberLi.dataset.likes = 1
+            numberLi.innerText = `${currentNumber} has been liked ${numberLi.dataset.likes} time`
+            likesUl.append(numberLi)
+        }
     }
     
 
-    setInterval(incrementTime, 1000)
-
+    const interval = () => { setInterval(incrementTime, 1000)}
+    interval()
     const likeButton = document.querySelector('#heart')
     const plusButton = document.querySelector('#plus')
     const minusButton = document.querySelector('#minus')
-
+    const pauseButton = document.querySelector('#pause')
     console.log(plusButton)
     plusButton.addEventListener('click', (e) => {
         incrementTime()
@@ -62,10 +56,30 @@ const timeControl = () => {
     likeButton.addEventListener('click', e =>{
         likeNumber()
     })
+
+    let status = 'inactive'
+    document.addEventListener('click', e => {
+        
+        if (e.target.matches('#pause')) {
+            
+            if (status === 'active') {
+                
+                pauseButton.innerText = 'pause'
+                interval
+                status = 'inactive'
+
+
+            } else {
+                pauseButton.innerText = 'resume'
+                clearInterval(interval)
+                status = 'active'
+                likeButton.disabled = true
+            }
+            
+        }
+    })
     
 }
 
 timeControl()
-
-// 3. As a user, I can 'like' an individual number of the counter. I should see count of the number of 'likes' associated with that number.
 
